@@ -1,0 +1,46 @@
+{
+  "name": "@agentgavin/front-end-master",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "MCP (Model Context Protocol) server for front-end developer",
+  "main": "dist/index.js",
+  "bin": {
+    "fe-master": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "inspect": "tsc && npx @modelcontextprotocol/inspector node -- dist/index.js",
+    "inspect-live": "npx @modelcontextprotocol/inspector npx -- @agentgavin/front-end-master",
+    "build": "tsc",
+    "start": "tsc && node dist/index.js",
+    "prepublishOnly": "npm run build",
+    "update": "npm run build && npm version patch && npm publish --access public"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "front-end",
+    "tools",
+    "frontend",
+    "developer",
+    "ai",
+    "tailwindcss"
+  ],
+  "author": "AgentGavin AI",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.4.1",
+    "crawler": "^1.5.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/crawler": "^1.2.6",
+    "@types/node": "^22.14.0",
+    "typescript": "^5.7.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
