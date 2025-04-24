@@ -3,18 +3,20 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import {
-  TailwindCSSUrlQueryTool,
-  TailwindCSSDocTool,
-} from "./tools/tailwind-docs-tool.js";
+  createUiTool,
+  readFullDocTool,
+  readUsageDocTool,
+} from "./tools/shadcn-ui-tool.js";
 
 const VERSION = "0.0.35";
 const server = new McpServer({
-  name: "fe-master",
+  name: "shadcn-ui",
   version: VERSION,
 });
 // Register tools
-new TailwindCSSUrlQueryTool().register(server);
-new TailwindCSSDocTool().register(server);
+new readUsageDocTool().register(server);
+new readFullDocTool().register(server);
+new createUiTool().register(server);
 
 async function runServer() {
   const transport = new StdioServerTransport();

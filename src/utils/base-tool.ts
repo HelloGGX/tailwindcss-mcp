@@ -5,8 +5,10 @@ export abstract class BaseTool {
   abstract name: string;
   abstract description: string;
   abstract schema: z.ZodObject<any>;
+  protected server?: McpServer;
 
   register(server: McpServer) {
+    this.server = server;
     server.tool(
       this.name,
       this.description,
