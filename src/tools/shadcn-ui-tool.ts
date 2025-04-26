@@ -11,10 +11,11 @@ import {
 import { CREATE_UI, FILTER_COMPONENTS } from "../prompts/ui.js";
 import { parseMessageToJson } from "../utils/parser.js";
 import { generateText } from "ai";
-import { createDeepSeek } from "@ai-sdk/deepseek";
+import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 
-const deepseek = createDeepSeek({
-  apiKey: process.env.DEEPSEEK_API_KEY ?? '',
+const openrouter = createOpenRouter({
+  apiKey:
+    "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",
 });
 
 export class readUsageDocTool extends BaseTool {
@@ -101,25 +102,9 @@ export class createUiTool extends BaseTool {
     const { text } = await generateText({
       system: FILTER_COMPONENTS,
       messages: transformedMessages,
-      model: deepseek("deepseek-reasoner"),
+      model: openrouter("deepseek/deepseek-chat-v3-0324:free"),
       maxTokens: 2000,
-      maxRetries: 5,
     });
-    // const filterComponentsResult = await this.server?.server.createMessage({
-    //   systemPrompt: FILTER_COMPONENTS,
-    //   messages: [
-    //     {
-    //       role: "user",
-    //       content: {
-    //         type: "text",
-    //         text: `<description>${description}</description><available-components>${JSON.stringify(
-    //           components
-    //         )}</available-components>`,
-    //       },
-    //     },
-    //   ],
-    //   maxTokens: 2000,
-    // });
 
     const filteredComponents = ComponentsSchema.parse(parseMessageToJson(text));
 
@@ -146,19 +131,18 @@ export class createUiTool extends BaseTool {
         role: "user",
         content: {
           type: "text",
-          text: `<description>${description}</description><available-components>
-                  ${usageDocs
-                    .map((d) => {
-                      return `<component>
-                    ### ${d.name}
+          text: `<description>${description}</description><available-components>${usageDocs
+            .map((d) => {
+              return `<component>
+            ### ${d.name}
 
-                    > ${d.justification}F
+            > ${d.justification}
 
-                    ${d.doc}
-                    </component>`;
-                    })
-                    .join("\n")}
-                </available-components>`,
+            ${d.doc}
+            </component>`;
+            })
+            .join("\n")}
+            </available-components>`,
         },
       },
     ]);
@@ -166,35 +150,10 @@ export class createUiTool extends BaseTool {
     const { text: uiCode } = await generateText({
       system: CREATE_UI,
       messages: createUiResultMessages,
-      model: deepseek("deepseek-reasoner"),
+      model: openrouter("deepseek/deepseek-chat-v3-0324:free"),
       maxTokens: 32768,
       maxRetries: 5,
     });
-    // const createUiResult = await this.server?.server.createMessage({
-    //   systemPrompt: CREATE_UI,
-    //   messages: [
-    //     {
-    //       role: "user",
-    //       content: {
-    //         type: "text",
-    //         text: `<description>${description}</description><available-components>
-    //                 ${usageDocs
-    //                   .map((d) => {
-    //                     return `<component>
-    //                   ### ${d.name}
-
-    //                   > ${d.justification}F
-
-    //                   ${d.doc}
-    //                   </component>`;
-    //                   })
-    //                   .join("\n")}
-    //               </available-components>`,
-    //       },
-    //     },
-    //   ],
-    //   maxTokens: 32768,
-    // });
 
     return {
       content: [
