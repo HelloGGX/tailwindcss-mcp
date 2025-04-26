@@ -6,9 +6,16 @@ import {
   extractComponents,
   readFullComponentDoc,
   readUsageComponentDoc,
+  transformMessages,
 } from "../utils/components.js";
 import { CREATE_UI, FILTER_COMPONENTS } from "../prompts/ui.js";
 import { parseMessageToJson } from "../utils/parser.js";
+import { generateText } from "ai";
+import { createDeepSeek } from "@ai-sdk/deepseek";
+
+const deepseek = createDeepSeek({
+  apiKey: process.env.DEEPSEEK_API_KEY ?? '',
+});
 
 export class readUsageDocTool extends BaseTool {
   name = "read-usage-doc";
@@ -79,26 +86,42 @@ export class createUiTool extends BaseTool {
     content: Array<{ type: "text"; text: string }>;
   }> {
     const components = await extractComponents();
-    // // 使用AI模型来筛选适合用户需求的UI组件
-    const filterComponentsResult = await this.server?.server.createMessage({
-      systemPrompt: FILTER_COMPONENTS,
-      messages: [
-        {
-          role: "user",
-          content: {
-            type: "text",
-            text: `<description>${description}</description><available-components>${JSON.stringify(
-              components
-            )}</available-components>`,
-          },
+    // 使用AI模型来筛选适合用户需求的UI组件
+    const transformedMessages = transformMessages([
+      {
+        role: "user",
+        content: {
+          type: "text",
+          text: `<description>${description}</description><available-components>${JSON.stringify(
+            components
+          )}</available-components>`,
         },
-      ],
+      },
+    ]);
+    const { text } = await generateText({
+      system: FILTER_COMPONENTS,
+      messages: transformedMessages,
+      model: deepseek("deepseek-reasoner"),
       maxTokens: 2000,
+      maxRetries: 5,
     });
+    // const filterComponentsResult = await this.server?.server.createMessage({
+    //   systemPrompt: FILTER_COMPONENTS,
+    //   messages: [
+    //     {
+    //       role: "user",
+    //       content: {
+    //         type: "text",
+    //         text: `<description>${description}</description><available-components>${JSON.stringify(
+    //           components
+    //         )}</available-components>`,
+    //       },
+    //     },
+    //   ],
+    //   maxTokens: 2000,
+    // });
 
-    const filteredComponents = ComponentsSchema.parse(
-      parseMessageToJson(filterComponentsResult?.content.text as string)
-    );
+    const filteredComponents = ComponentsSchema.parse(parseMessageToJson(text));
 
     filteredComponents.components.forEach((c) => {
       c.name = c.name.toLowerCase();
@@ -118,33 +141,60 @@ export class createUiTool extends BaseTool {
         })
     );
 
-    const createUiResult = await this.server?.server.createMessage({
-      systemPrompt: CREATE_UI,
-      messages: [
-        {
-          role: "user",
-          content: {
-            type: "text",
-            text: `<description>${description}</description><available-components>
-                    ${usageDocs
-                      .map((d) => {
-                        return `<component>
-                      ### ${d.name}
+    const createUiResultMessages = transformMessages([
+      {
+        role: "user",
+        content: {
+          type: "text",
+          text: `<description>${description}</description><available-components>
+                  ${usageDocs
+                    .map((d) => {
+                      return `<component>
+                    ### ${d.name}
 
-                      > ${d.justification}F
+                    > ${d.justification}F
 
-                      ${d.doc}
-                      </component>`;
-                      })
-                      .join("\n")}
-                  </available-components>`,
-          },
+                    ${d.doc}
+                    </component>`;
+                    })
+                    .join("\n")}
+                </available-components>`,
         },
-      ],
-      maxTokens: 32768,
-    });
+      },
+    ]);
 
-    const uiCode = createUiResult?.content.text as string;
+    const { text: uiCode } = await generateText({
+      system: CREATE_UI,
+      messages: createUiResultMessages,
+      model: deepseek("deepseek-reasoner"),
+      maxTokens: 32768,
+      maxRetries: 5,
+    });
+    // const createUiResult = await this.server?.server.createMessage({
+    //   systemPrompt: CREATE_UI,
+    //   messages: [
+    //     {
+    //       role: "user",
+    //       content: {
+    //         type: "text",
+    //         text: `<description>${description}</description><available-components>
+    //                 ${usageDocs
+    //                   .map((d) => {
+    //                     return `<component>
+    //                   ### ${d.name}
+
+    //                   > ${d.justification}F
+
+    //                   ${d.doc}
+    //                   </component>`;
+    //                   })
+    //                   .join("\n")}
+    //               </available-components>`,
+    //       },
+    //     },
+    //   ],
+    //   maxTokens: 32768,
+    // });
 
     return {
       content: [

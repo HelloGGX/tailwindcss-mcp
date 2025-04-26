@@ -12,6 +12,11 @@ const VERSION = "0.0.35";
 const server = new McpServer({
   name: "shadcn-ui",
   version: VERSION,
+  capabilities: {
+    resources: {},
+    tools: {},
+    logging: {},
+  },
 });
 // Register tools
 new readUsageDocTool().register(server);
