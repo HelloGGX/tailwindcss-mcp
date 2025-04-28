@@ -6,6 +6,7 @@ import {
   createUiTool,
   readFullDocTool,
   readUsageDocTool,
+  refineCodeTool,
 } from "./tools/shadcn-ui-tool.js";
 
 const VERSION = "0.0.35";
@@ -22,6 +23,7 @@ const server = new McpServer({
 new readUsageDocTool().register(server);
 new readFullDocTool().register(server);
 new createUiTool().register(server);
+new refineCodeTool().register(server);
 
 async function runServer() {
   const transport = new StdioServerTransport();

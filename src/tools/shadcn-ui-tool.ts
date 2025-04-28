@@ -20,7 +20,8 @@ const openrouter = createOpenRouter({
 
 export class readUsageDocTool extends BaseTool {
   name = "read-usage-doc";
-  description = "read usage doc of a component";
+  description =
+    "read usage doc of a component， Use this tool when mentions /usedoc.";
 
   // 参数定义
   schema = z.object({
@@ -48,7 +49,8 @@ export class readUsageDocTool extends BaseTool {
 }
 export class readFullDocTool extends BaseTool {
   name = "read-full-doc";
-  description = "read full doc of a component";
+  description =
+    "read full doc of a component, Use this tool when mentions /doc.";
 
   // 参数定义
   schema = z.object({
@@ -76,8 +78,7 @@ export class readFullDocTool extends BaseTool {
 }
 export class createUiTool extends BaseTool {
   name = "create-ui";
-  description = `create Web UI with shadcn/ui components and tailwindcss, Use this tool when the user requests a new UI component—e.g., mentions /ui, or asks for a button, input, dialog, table, form, banner, card, or other vue component. 
-  After calling this tool, you must edit or add files to integrate the snippet into the codebase.`;
+  description = `create Web UI with shadcn/ui components and tailwindcss, Use this tool when mentions /ui`;
 
   // 参数定义
   schema = z.object({
@@ -106,8 +107,17 @@ export class createUiTool extends BaseTool {
       model: openrouter("deepseek/deepseek-r1:free"),
       maxTokens: 2000,
     });
-
-    const filteredComponents = ComponentsSchema.parse(parseMessageToJson(text));
+    const responseJson = parseMessageToJson(text);
+    if (responseJson.component) {
+      responseJson.components = responseJson.component;
+      delete responseJson.component;
+    }
+    if (responseJson.chart) {
+      responseJson.charts = responseJson.chart;
+      delete responseJson.chart;
+    }
+    
+    const filteredComponents = ComponentsSchema.parse(responseJson);
 
     filteredComponents.components.forEach((c) => {
       c.name = c.name.toLowerCase();
