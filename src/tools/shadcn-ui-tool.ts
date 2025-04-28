@@ -8,14 +8,14 @@ import {
   readUsageComponentDoc,
   transformMessages,
 } from "../utils/components.js";
-import { CREATE_UI, FILTER_COMPONENTS } from "../prompts/ui.js";
+import { CREATE_UI, FILTER_COMPONENTS, REFINED_UI } from "../prompts/ui.js";
 import { parseMessageToJson } from "../utils/parser.js";
 import { generateText } from "ai";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
+import "dotenv/config";
 
 const openrouter = createOpenRouter({
-  apiKey:
-    "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",
+  apiKey: process.env.OPENROUTER_API_KEY,
 });
 
 export class readUsageDocTool extends BaseTool {
@@ -76,7 +76,8 @@ export class readFullDocTool extends BaseTool {
 }
 export class createUiTool extends BaseTool {
   name = "create-ui";
-  description = "create Web UI with shadcn/ui components and tailwindcss";
+  description = `create Web UI with shadcn/ui components and tailwindcss, Use this tool when the user requests a new UI component—e.g., mentions /ui, or asks for a button, input, dialog, table, form, banner, card, or other vue component. 
+  After calling this tool, you must edit or add files to integrate the snippet into the codebase.`;
 
   // 参数定义
   schema = z.object({
@@ -102,7 +103,7 @@ export class createUiTool extends BaseTool {
     const { text } = await generateText({
       system: FILTER_COMPONENTS,
       messages: transformedMessages,
-      model: openrouter("deepseek/deepseek-chat-v3-0324:free"),
+      model: openrouter("deepseek/deepseek-r1:free"),
       maxTokens: 2000,
     });
 
@@ -150,7 +151,7 @@ export class createUiTool extends BaseTool {
     const { text: uiCode } = await generateText({
       system: CREATE_UI,
       messages: createUiResultMessages,
-      model: openrouter("deepseek/deepseek-chat-v3-0324:free"),
+      model: openrouter("deepseek/deepseek-r1:free"),
       maxTokens: 32768,
       maxRetries: 5,
     });
@@ -163,5 +164,79 @@ export class createUiTool extends BaseTool {
         },
       ],
     };
+  }
+}
+export class refineCodeTool extends BaseTool {
+  name = "refine-code";
+  description = `refine code with shadcn/ui components and tailwindcss,
+  Use this tool when the user requests to refine/improve current UI component with /ui commands,
+or when context is about improving, or refining UI for a Vue component or molecule (NOT for big pages).
+This tool improves UI of components and returns improved version of the component and instructions on how to implement it.`;
+
+  schema = z.object({
+    userMessage: z.string().describe("Full user's message about UI refinement"),
+    absolutePathToRefiningFile: z
+      .string()
+      .describe("Absolute path to the file that needs to be refined"),
+    context: z
+      .string()
+      .describe(
+        "Extract the specific UI elements and aspects that need improvement based on user messages, code, and conversation history. Identify exactly which components (buttons, forms, modals, etc.) the user is referring to and what aspects (styling, layout, responsiveness, etc.) they want to enhance. Do not include generic improvements - focus only on what the user explicitly mentions or what can be reasonably inferred from the available context. If nothing specific is mentioned or you cannot determine what needs improvement, return an empty string."
+      ),
+  });
+
+  async execute({
+    userMessage,
+    absolutePathToRefiningFile,
+    context,
+  }: z.infer<typeof this.schema>) {
+    try {
+      const fileContent = await this.getContentOfFile(
+        absolutePathToRefiningFile
+      );
+
+      const { text } = await generateText({
+        system: REFINED_UI,
+        messages: [
+          {
+            role: "assistant",
+            content: [
+              {
+                type: "text",
+                text: `<description>${userMessage}</description>
+                <refining-component>${fileContent}</refining-component>
+                
+                `,
+              },
+            ],
+          },
+        ],
+        model: openrouter("deepseek/deepseek-r1:free"),
+        maxTokens: 32768,
+        maxRetries: 5,
+      });
+
+      return {
+        content: [
+          {
+            type: "text" as const,
+            text: text,
+          },
+        ],
+      };
+    } catch (error) {
+      console.error("Error executing tool", error);
+      throw error;
+    }
+  }
+
+  private async getContentOfFile(path: string): Promise<string> {
+    try {
+      const fs = await import("fs/promises");
+      return await fs.readFile(path, "utf-8");
+    } catch (error) {
+      console.error(`Error reading file ${path}:`, error);
+      return "";
+    }
   }
 }

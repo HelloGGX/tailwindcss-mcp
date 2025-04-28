@@ -20,6 +20,9 @@ importers:
       ai:
         specifier: ^4.3.10
         version: 4.3.10(react@19.1.0)(zod@3.24.3)
+      dotenv:
+        specifier: ^16.5.0
+        version: 16.5.0
       mdast-util-from-markdown:
         specifier: ^2.0.2
         version: 2.0.2
@@ -208,6 +211,10 @@ packages:
 
   diff-match-patch@1.0.5:
     resolution: {integrity: sha512-IayShXAgj/QMXgB0IWmKx+rOPuGMhqm5w6jvFxmVenXKIzRqTAAsbBPT3kWQeGANj3jGgvcvv4yK6SxqYmikgw==}
+
+  dotenv@16.5.0:
+    resolution: {integrity: sha512-m/C+AwOAr9/W1UOIZUo232ejMNnJAJtYQjUbHoNTBNTJSvqzzDh7vnrei3o3r3m9blf6ZoDkvcw0VmozNRFJxg==}
+    engines: {node: '>=12'}
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
@@ -770,6 +777,8 @@ snapshots:
       dequal: 2.0.3
 
   diff-match-patch@1.0.5: {}
+
+  dotenv@16.5.0: {}
 
   dunder-proto@1.0.1:
     dependencies:

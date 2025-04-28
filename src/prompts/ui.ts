@@ -101,3 +101,5 @@ export const CREATE_UI = `<role>
 <motivational>
   Remember: you love your designers and want them to be happy. The more complete and impressive your prototype, the happier they will be. Good luck, you've got this!
 </motivational>`;
+
+export const REFINED_UI = ``;

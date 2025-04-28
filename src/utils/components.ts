@@ -7,36 +7,35 @@ import { z } from "zod";
 const BASE_URL = `https://raw.gitmirror.com/unovue/shadcn-vue/dev/apps/www`;
 const GitHub_URL = `https://api.github.com/repos/unovue/shadcn-vue/contents/apps/www/src/content/docs`;
 
-
 export async function extractComponents() {
   try {
     // 并行发起请求以提高性能
     const [componentsResponse, chartsResponse] = await Promise.all([
       fetch(`${GitHub_URL}/components`),
-      fetch(`${GitHub_URL}/charts`)
+      fetch(`${GitHub_URL}/charts`),
     ]);
     // 并行解析JSON响应
     const [componentsData, chartsData] = await Promise.all([
       componentsResponse.json(),
-      chartsResponse.json()
+      chartsResponse.json(),
     ]);
-    
+
     // 定义更明确的类型和提取函数
     interface GitHubItem {
       name: string;
       type: string;
       [key: string]: any;
     }
-    
-    const extractNames = (items: GitHubItem[]) => 
+
+    const extractNames = (items: GitHubItem[]) =>
       items
-        .filter(item => item.type === "file" && item.name.endsWith(".md"))
-        .map(item => item.name.replace(".md", ""));
-    
+        .filter((item) => item.type === "file" && item.name.endsWith(".md"))
+        .map((item) => item.name.replace(".md", ""));
+
     // 提取组件和图表名称
     const components = extractNames(componentsData as GitHubItem[]);
     const charts = extractNames(chartsData as GitHubItem[]);
-    
+
     return { components, charts };
   } catch (error) {
     console.error("获取组件列表失败:", error);
