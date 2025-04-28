@@ -205,7 +205,7 @@ This tool improves UI of components and returns improved version of the componen
                 type: "text",
                 text: `<description>${userMessage}</description>
                 <refining-component>${fileContent}</refining-component>
-                
+                ${context}
                 `,
               },
             ],
