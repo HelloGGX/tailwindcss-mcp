@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import {
   createUiTool,
@@ -14,11 +14,21 @@ const server = new McpServer({
   name: "shadcn-ui",
   version: VERSION,
   capabilities: {
-    resources: {},
+    resources: {
+      subscribe: true,
+      listChanged: true,
+    },
     tools: {},
     logging: {},
   },
 });
+
+server.resource(
+  "greeting",
+  new ResourceTemplate("greeting://{name}", { list: undefined }),
+  async (uri, { name }) => ({ contents: [{ uri: uri.href, text: `Hello, ${name}!` }] })
+);
+
 // Register tools
 new readUsageDocTool().register(server);
 new readFullDocTool().register(server);
