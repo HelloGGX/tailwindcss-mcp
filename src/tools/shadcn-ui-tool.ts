@@ -116,7 +116,7 @@ export class createUiTool extends BaseTool {
       responseJson.charts = responseJson.chart;
       delete responseJson.chart;
     }
-    
+
     const filteredComponents = ComponentsSchema.parse(responseJson);
 
     filteredComponents.components.forEach((c) => {
@@ -209,7 +209,7 @@ This tool improves UI of components and returns improved version of the componen
         system: REFINED_UI,
         messages: [
           {
-            role: "assistant",
+            role: "user",
             content: [
               {
                 type: "text",
