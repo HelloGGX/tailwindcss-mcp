@@ -1,29 +1,37 @@
 export function parseMessageToJson(input: string) {
-    // Regular expression to match JSON code blocks
-    const jsonCodeBlockRegex = /```json\n([\s\S]*?)\n```/g;
-  
-    // Find all matches for JSON code blocks
-    const matches = Array.from(input.matchAll(jsonCodeBlockRegex));
-  
+  // 定义提取JSON内容的格式模式
+  const extractPatterns = [
+    {
+      pattern: /<response_format>([\s\S]*?)<\/response_format>/g,
+      name: "response_format",
+    },
+    { pattern: /```json\n([\s\S]*?)\n```/g, name: "json code block" },
+  ];
+
+  // 尝试按优先级提取JSON字符串
+  let jsonString = input.trim();
+  let extractSource = "raw input";
+
+  for (const { pattern, name } of extractPatterns) {
+    const matches = Array.from(input.matchAll(pattern));
+
     if (matches.length > 1) {
-      throw new Error("Multiple JSON code blocks found in the input string.");
+      throw new Error(`Multiple ${name} blocks found in the input string.`);
     }
-  
-    let jsonString: string;
-  
+
     if (matches.length === 1) {
-      // Extract JSON content from the code block, trimming whitespace
       jsonString = matches[0][1].trim();
-    } else {
-      // No JSON code block found, use the entire input
-      jsonString = input.trim();
-    }
-  
-    try {
-      // Parse the JSON string into an object
-      return JSON.parse(jsonString);
-    } catch (error) {
-      throw new Error("Failed to parse JSON: " + error + "\n\n" + jsonString);
+      extractSource = name;
+      break;
     }
   }
-  
+
+  try {
+    // 解析JSON字符串为对象
+    return JSON.parse(jsonString);
+  } catch (error) {
+    throw new Error(
+      `Failed to parse JSON from ${extractSource}: ${error}\n\n${jsonString}`
+    );
+  }
+}
