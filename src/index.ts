@@ -11,7 +11,7 @@ import {
   refineCodeTool,
 } from "./tools/shadcn-ui-tool.js";
 
-const VERSION = "0.0.35";
+const VERSION = "0.0.0";
 const server = new McpServer({
   name: "shadcn-ui",
   version: VERSION,
