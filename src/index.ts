@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
-import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
+import {
+  McpServer,
+} from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import {
   createUiTool,
@@ -24,9 +26,16 @@ const server = new McpServer({
 });
 
 server.resource(
-  "greeting",
-  new ResourceTemplate("greeting://{name}", { list: undefined }),
-  async (uri, { name }) => ({ contents: [{ uri: uri.href, text: `Hello, ${name}!` }] })
+  "tailwindcss-docs",
+  'tailwindcss://docs',
+  async (uri) => {
+    const response = await fetch('https://context7.com/tailwindlabs/tailwindcss.com/llms.txt?tokens=198559');
+    if (!response.ok) {
+      throw new Error(`Failed to fetch ${uri}: ${response.statusText}`);
+    }
+    const text = await response.text();
+    return { contents: [{ uri: uri.href, text: text }] };
+  }
 );
 
 // Register tools
