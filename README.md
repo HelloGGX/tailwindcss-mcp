@@ -104,6 +104,8 @@ npx -y @smithery/cli install @agentgavin/shadcn-vue --client claude
 
 AI: 生成的代码如下：
 
+![UI组件示例](https://github.com/HelloGGX/tailwindcss-mcp/raw/main/docs/ui.png) 
+
 ```vue
 <script setup lang="ts">
 import { Card } from "@/components/ui/card";
