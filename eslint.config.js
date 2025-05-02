@@ -22,7 +22,7 @@ export default tseslint.config({
     reportUnusedDisableDirectives: true,
   },
   // Apply ESLint recommended rules
-  extends: [tseslint.configs.recommended],
+  extends: [tseslint.configs.recommended, "plugin:prettier/recommended"],
   plugins: {
     prettier: eslintPluginPrettier,
   },

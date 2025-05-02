@@ -9,12 +9,7 @@ export abstract class BaseTool {
 
   register(server: McpServer) {
     this.server = server;
-    server.tool(
-      this.name,
-      this.description,
-      this.schema.shape,
-      this.execute.bind(this),
-    );
+    server.tool(this.name, this.description, this.schema.shape, this.execute.bind(this));
   }
 
   abstract execute(args: z.infer<typeof this.schema>): Promise<{
