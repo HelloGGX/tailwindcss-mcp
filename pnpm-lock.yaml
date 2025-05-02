@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@ai-sdk/deepseek':
-        specifier: ^0.2.13
-        version: 0.2.13(zod@3.24.3)
       '@modelcontextprotocol/sdk':
         specifier: ^1.10.2
         version: 1.10.2
@@ -44,18 +41,6 @@ importers:
         version: 5.8.3
 
 packages:
-
-  '@ai-sdk/deepseek@0.2.13':
-    resolution: {integrity: sha512-+Vw+nMdypupRfQb37wT1YmNNAROhCBqVRhHule3dk8A26N/W8GlAfVwLiae1/fK275UddbQWpUTMzvrx7n9HDg==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      zod: ^3.0.0
-
-  '@ai-sdk/openai-compatible@0.2.13':
-    resolution: {integrity: sha512-tB+lL8Z3j0qDod/mvxwjrPhbLUHp/aQW+NvMoJaqeTtP+Vmv5qR800pncGczxn5WN0pllQm+7aIRDnm69XeSbg==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      zod: ^3.0.0
 
   '@ai-sdk/provider-utils@2.1.10':
     resolution: {integrity: sha512-4GZ8GHjOFxePFzkl3q42AU0DQOtTQ5w09vmaWUf/pKFXJPizlnzKSUkF0f+VkapIUfDugyMqPMT1ge8XQzVI7Q==}
@@ -603,19 +588,6 @@ packages:
     resolution: {integrity: sha512-HhY1oqzWCQWuUqvBFnsyrtZRhyPeR7SUGv+C4+MsisMuVfSPx8HpwWqH8tRahSlt6M3PiFAcoeFhZAqIXTxoSg==}
 
 snapshots:
-
-  '@ai-sdk/deepseek@0.2.13(zod@3.24.3)':
-    dependencies:
-      '@ai-sdk/openai-compatible': 0.2.13(zod@3.24.3)
-      '@ai-sdk/provider': 1.1.3
-      '@ai-sdk/provider-utils': 2.2.7(zod@3.24.3)
-      zod: 3.24.3
-
-  '@ai-sdk/openai-compatible@0.2.13(zod@3.24.3)':
-    dependencies:
-      '@ai-sdk/provider': 1.1.3
-      '@ai-sdk/provider-utils': 2.2.7(zod@3.24.3)
-      zod: 3.24.3
 
   '@ai-sdk/provider-utils@2.1.10(zod@3.24.3)':
     dependencies:

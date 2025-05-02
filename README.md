@@ -27,6 +27,8 @@ Node.js 22 or above.
 手动配置 AI 应用（例如 Claude Descktop）。
 Configure AI application (e.g. Claude Desktop).
 
+请到 **https://openrouter.ai/models** 注册账号，获取OPENROUTER_API_KEY， 查看可用的模型列表获取OPENROUTER_MODEL_ID。
+
 ```json
 {
   "mcpServers": {
@@ -34,6 +36,7 @@ Configure AI application (e.g. Claude Desktop).
       "command": "npx",
       "args": ["-y", "@agentgavin/shadcn-vue"],
       "env": {
+        "OPENROUTER_MODEL_ID": "deepseek/deepseek-r1:free",
         "OPENROUTER_API_KEY": "您的OpenRouter API密钥"
       }
     }

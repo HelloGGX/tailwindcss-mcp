@@ -14,6 +14,15 @@ import { generateText } from "ai";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import "dotenv/config";
 
+const OPENROUTER_MODEL_ID = process.env.OPENROUTER_MODEL_ID;
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+if (!OPENROUTER_MODEL_ID) {
+  throw new Error("OPENROUTER_MODEL_ID is not set");
+}
+if (!OPENROUTER_API_KEY) {
+  throw new Error("OPENROUTER_API_KEY is not set");
+}
+
 const openrouter = createOpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,
 });
@@ -88,6 +97,9 @@ export class createUiTool extends BaseTool {
   async execute({ description }: z.infer<typeof this.schema>): Promise<{
     content: Array<{ type: "text"; text: string }>;
   }> {
+    if (!OPENROUTER_MODEL_ID) {
+      throw new Error("OPENROUTER_MODEL_ID is not set");
+    }
     const components = await extractComponents();
     // 使用AI模型来筛选适合用户需求的UI组件
     const transformedMessages = transformMessages([
@@ -104,7 +116,7 @@ export class createUiTool extends BaseTool {
     const { text } = await generateText({
       system: FILTER_COMPONENTS,
       messages: transformedMessages,
-      model: openrouter("deepseek/deepseek-r1:free"),
+      model: openrouter(OPENROUTER_MODEL_ID),
       maxTokens: 2000,
     });
     const responseJson = parseMessageToJson(text);
@@ -161,7 +173,7 @@ export class createUiTool extends BaseTool {
     const { text: uiCode } = await generateText({
       system: CREATE_UI,
       messages: createUiResultMessages,
-      model: openrouter("deepseek/deepseek-r1:free"),
+      model: openrouter(OPENROUTER_MODEL_ID),
       maxTokens: 32768,
       maxRetries: 5,
     });
@@ -201,6 +213,10 @@ This tool improves UI of components and returns improved version of the componen
     context,
   }: z.infer<typeof this.schema>) {
     try {
+      if (!OPENROUTER_MODEL_ID) {
+        throw new Error("OPENROUTER_MODEL_ID is not set");
+      }
+
       const fileContent = await this.getContentOfFile(
         absolutePathToRefiningFile
       );
@@ -221,7 +237,7 @@ This tool improves UI of components and returns improved version of the componen
             ],
           },
         ],
-        model: openrouter("deepseek/deepseek-r1:free"),
+        model: openrouter(OPENROUTER_MODEL_ID),
         maxTokens: 32768,
         maxRetries: 5,
       });

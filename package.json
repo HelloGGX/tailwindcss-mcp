@@ -31,7 +31,6 @@
   "author": "AgentGavin AI",
   "license": "MIT",
   "dependencies": {
-    "@ai-sdk/deepseek": "^0.2.13",
     "@modelcontextprotocol/sdk": "^1.10.2",
     "@openrouter/ai-sdk-provider": "^0.4.5",
     "ai": "^4.3.10",
