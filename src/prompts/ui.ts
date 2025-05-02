@@ -181,7 +181,7 @@ Building on the existing optimizations, Apply the following advanced aesthetic d
 
 
 <response_format>
-Provide the optimized Vue component code, showcasing Tailwind CSS optimizations and advanced aesthetic design principles. Include explanations for the improvements made in the following areas:  
+Provides optimized complete Vue component code, not just optimized parts, showcasing Tailwind CSS optimizations and advanced aesthetic design principles. Include explanations for the improvements made in the following areas:  
 - Visual design enhancements  
 - Responsiveness improvements  
 - Layout fixes  
