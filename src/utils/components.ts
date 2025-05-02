@@ -55,13 +55,13 @@ function extractVueCodeBlocks(markdownContent: string): string[] {
   // usageHeadingNode: 存储 "Usage" 标题节点
   // usageSectionStart: 存储 "Usage" 部分开始的行号
   // usageSectionEnd: 存储 "Usage" 部分结束的行号，初始设为无穷大
-  let usageHeadingNode = null;
+  // let usageHeadingNode = null;
   let usageSectionStart = -1;
   let usageSectionEnd = Infinity;
 
   // 使用 unist-util-visit-parents 库遍历 AST，查找 "Usage" 标题
   // visitParents 函数接收三个参数：AST、要查找的节点类型、回调函数
-  visitParents(ast, "heading", (node, ancestors) => {
+  visitParents(ast, "heading", (node) => {
     // 检查当前节点是否为二级标题(## Usage)
     // 并且标题文本为 "Usage"
     if (
@@ -71,7 +71,7 @@ function extractVueCodeBlocks(markdownContent: string): string[] {
       node.children[0].type === "text" &&
       node.children[0].value === "Usage"
     ) {
-      usageHeadingNode = node;
+      // usageHeadingNode = node;
       usageSectionStart = node.position?.end?.line || -1;
     }
   });
@@ -86,11 +86,7 @@ function extractVueCodeBlocks(markdownContent: string): string[] {
   // 这用于确定 "Usage" 部分的结束位置
   visitParents(ast, "heading", (node) => {
     const headingLine = node.position?.start?.line || Infinity;
-    if (
-      node.depth === 2 &&
-      headingLine > usageSectionStart &&
-      headingLine < usageSectionEnd
-    ) {
+    if (node.depth === 2 && headingLine > usageSectionStart && headingLine < usageSectionEnd) {
       usageSectionEnd = headingLine;
     }
   });
@@ -101,11 +97,7 @@ function extractVueCodeBlocks(markdownContent: string): string[] {
     const nodeLine = node.position?.start?.line || 0;
 
     // 检查代码块是否在 "Usage" 部分内，且语言为 "vue"
-    if (
-      nodeLine > usageSectionStart &&
-      nodeLine < usageSectionEnd &&
-      node.lang === "vue"
-    ) {
+    if (nodeLine > usageSectionStart && nodeLine < usageSectionEnd && node.lang === "vue") {
       tsxBlocks.push(node.value);
     }
   });
@@ -118,7 +110,7 @@ export async function readFullComponentDoc({ name }: { name: string }) {
   const content = await res.text();
   // 检查内容是否包含 404 错误信息
   if (content.includes('<div class="error-code">404</div>')) {
-    return 'No documentation found for this component';
+    return "No documentation found for this component";
   }
   return content;
 }
@@ -190,8 +182,7 @@ export async function fetchLibraryDocumentation(
       libraryId = libraryId.slice(1);
     }
     const url = new URL(`${CONTEXT7_API_BASE_URL}/v1/${libraryId}`);
-    if (options.tokens)
-      url.searchParams.set("tokens", options.tokens.toString());
+    if (options.tokens) url.searchParams.set("tokens", options.tokens.toString());
     if (options.topic) url.searchParams.set("topic", options.topic);
     if (options.folders) url.searchParams.set("folders", options.folders);
     url.searchParams.set("type", DEFAULT_TYPE);
@@ -205,11 +196,7 @@ export async function fetchLibraryDocumentation(
       return null;
     }
     const text = await response.text();
-    if (
-      !text ||
-      text === "No content available" ||
-      text === "No context data available"
-    ) {
+    if (!text || text === "No content available" || text === "No context data available") {
       return null;
     }
     return text;

@@ -36,8 +36,7 @@ function getOpenRouterClient() {
 
 export class readUsageDocTool extends BaseTool {
   name = "read-usage-doc";
-  description =
-    "read usage doc of a component， Use this tool when mentions /usedoc.";
+  description = "read usage doc of a component， Use this tool when mentions /usedoc.";
 
   // 参数定义
   schema = z.object({
@@ -67,8 +66,7 @@ export class readUsageDocTool extends BaseTool {
 }
 export class readFullDocTool extends BaseTool {
   name = "read-full-doc";
-  description =
-    "read full doc of a component, Use this tool when mentions /doc.";
+  description = "read full doc of a component, Use this tool when mentions /doc.";
 
   // 参数定义
   schema = z.object({
@@ -124,7 +122,7 @@ export class createUiTool extends BaseTool {
     const { text } = await generateText({
       system: FILTER_COMPONENTS,
       messages: transformedMessages,
-      model: openrouter(OPENROUTER_MODEL_ID || ''),
+      model: openrouter(OPENROUTER_MODEL_ID || ""),
       maxTokens: 2000,
     });
     const responseJson = parseMessageToJson(text);
@@ -147,16 +145,14 @@ export class createUiTool extends BaseTool {
     });
 
     const usageDocs = await Promise.all(
-      filteredComponents.components
-        .filter(createNecessityFilter("optional"))
-        .map(async (c) => {
-          return {
-            ...c,
-            doc: await fetchLibraryDocumentation("/unovue/shadcn-vue", {
-              topic: c.name,
-            }),
-          };
-        })
+      filteredComponents.components.filter(createNecessityFilter("optional")).map(async (c) => {
+        return {
+          ...c,
+          doc: await fetchLibraryDocumentation("/unovue/shadcn-vue", {
+            topic: c.name,
+          }),
+        };
+      })
     );
 
     const createUiResultMessages = transformMessages([
@@ -182,7 +178,7 @@ export class createUiTool extends BaseTool {
     const { text: uiCode } = await generateText({
       system: CREATE_UI,
       messages: createUiResultMessages,
-      model: openrouter(OPENROUTER_MODEL_ID || ''),
+      model: openrouter(OPENROUTER_MODEL_ID || ""),
       maxTokens: 32768,
       maxRetries: 5,
     });
@@ -216,17 +212,11 @@ This tool improves UI of components and returns improved version of the componen
       ),
   });
 
-  async execute({
-    userMessage,
-    absolutePathToRefiningFile,
-    context,
-  }: z.infer<typeof this.schema>) {
+  async execute({ userMessage, absolutePathToRefiningFile, context }: z.infer<typeof this.schema>) {
     try {
       const openrouter = getOpenRouterClient();
 
-      const fileContent = await this.getContentOfFile(
-        absolutePathToRefiningFile
-      );
+      const fileContent = await this.getContentOfFile(absolutePathToRefiningFile);
 
       const { text } = await generateText({
         system: REFINED_UI,
@@ -244,7 +234,7 @@ This tool improves UI of components and returns improved version of the componen
             ],
           },
         ],
-        model: openrouter(OPENROUTER_MODEL_ID || ''),
+        model: openrouter(OPENROUTER_MODEL_ID || ""),
         maxTokens: 32768,
         maxRetries: 5,
       });
