@@ -12,7 +12,10 @@ import { CREATE_UI, FILTER_COMPONENTS, REFINED_UI } from "../prompts/ui.js";
 import { parseMessageToJson } from "../utils/parser.js";
 import { generateText } from "ai";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-import "dotenv/config";
+import dotenv from "dotenv";
+
+// Load environment variables from .env file if present
+dotenv.config();
 
 const OPENROUTER_MODEL_ID = process.env.OPENROUTER_MODEL_ID;
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
