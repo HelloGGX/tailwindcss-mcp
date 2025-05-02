@@ -1,6 +1,6 @@
 ## 中文
 
-Shadcn-vue Component Platform (SCP) 是一款强大的 AI 驱动工具，可帮助开发者通过自然语言描述即时创建美观、现代的 UI 组件。它集成 shadcn-vue 组件库和 tailwindcss, 并与主流 IDE 无缝集成，并提供精简的 UI 开发工作流程。
+Shadcn-vue MCP Server  是一款强大的 AI 驱动工具，可帮助开发者通过自然语言描述即时创建美观、现代的 UI 组件。它集成 shadcn-vue 组件库和 tailwindcss, 并与主流 IDE 无缝集成，并提供精简的 UI 开发工作流程。
 
 ## ❌ 不使用 shadcn-vue MCP
 
@@ -16,20 +16,20 @@ Shadcn-vue Component Platform (SCP) 是一款强大的 AI 驱动工具，可帮�
 SCP提供智能化的UI组件开发体验：
 
 - 1️⃣ 只需用自然语言描述您需要的组件
-- 2️⃣ SCP自动生成符合shadcn-vue、tailwindcss规范的代码
+- 2️⃣ 该MCP自动生成符合shadcn-vue、tailwindcss规范的代码
 - 3️⃣ 获得可直接使用的高质量，设计统一的shadcn-vue UI组件
 
 示例用法：
 
 ```txt
-/ui 创建一个导航栏组件 use SCP
+/ui 创建一个导航栏组件
 ```
 
 ```txt
-/refine 优化导航栏组件的响应式和可访问性 use SCP
+/refine 优化导航栏组件的响应式和可访问性
 ```
 
-SCP的优势：
+优势：
 
 - 实时获取最新的shadcn-vue组件使用规范
 - 生成的代码100%符合当前版本要求

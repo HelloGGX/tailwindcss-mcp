@@ -4,7 +4,7 @@
 
 [![中文文档](https://img.shields.io/badge/docs-中文版-yellow)](./docs/README.zh-CN.md)
 
-Shadcn-vue Component Platform (SCP) is a powerful AI-driven tool that helps developers instantly create beautiful, modern UI components through natural language descriptions. It integrates the shadcn-vue component library and tailwindcss, seamlessly connects with mainstream IDEs, and provides a streamlined UI development workflow.
+Shadcn-vue MCP Server is a powerful AI-driven tool that helps developers instantly create beautiful, modern UI components through natural language descriptions. It integrates the shadcn-vue component library and tailwindcss, seamlessly connects with mainstream IDEs, and provides a streamlined UI development workflow.
 
 ## ❌ Without shadcn-vue MCP
 
@@ -17,24 +17,23 @@ Developers face multiple challenges when building UI components:
 
 ## ✅ With shadcn-vue MCP
 
-SCP provides an intelligent UI component development experience:
+shadcn-vue MCP provides an intelligent UI component development experience:
 
 - 1️⃣ Simply describe your desired component in natural language
-- 2️⃣ SCP automatically generates code compliant with shadcn-vue and tailwindcss standards
+- 2️⃣ MCP automatically generates code compliant with shadcn-vue and tailwindcss standards
 - 3️⃣ Get production-ready, design-consistent shadcn-vue UI components
 
 Example usage:
 
 ```txt
-/ui create a navigation bar component use SCP
+/ui create a navigation bar component 
 ```
 
 ```txt
-/refine optimize the navbar's responsiveness and accessibility use SCP
+/refine optimize the navbar's responsiveness and accessibility
 ```
 
-SCP advantages:
-
+ advantages:
 - Real-time access to latest shadcn-vue component specifications
 - Generated code 100% compliant with current version requirements
 - Built-in TailwindCSS styling support, using tailwindcss4.0 latest docs as context
