@@ -36,7 +36,7 @@ Example usage:
  advantages:
 - Real-time access to latest shadcn-vue component specifications
 - Generated code 100% compliant with current version requirements
-- Built-in TailwindCSS styling support, using tailwindcss4.0 latest docs as context
+- Based on the LLM.txt file provided by context7 as context, more accurate code generation is achieved
 - No more repeatedly checking documentation or worrying about version compatibility
 - Seamless multi-IDE workflow integration
 
