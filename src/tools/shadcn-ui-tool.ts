@@ -180,7 +180,7 @@ export class createUiTool extends BaseTool {
       messages: createUiResultMessages,
       model: openrouter(OPENROUTER_MODEL_ID || ""),
       maxTokens: 32768,
-      maxRetries: 5,
+      maxRetries: 3,
     });
 
     return {
