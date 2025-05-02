@@ -1,4 +1,4 @@
-# ShadcnVue MCP Server - A powerful AI-driven tool that helps developers instantly create high-quality UI components
+# ShadcnVue MCP Server - A powerful AI Agent tool that helps developers instantly create high-quality UI components
 
 [![smithery badge](https://smithery.ai/badge/@HelloGGX/shadcn-vue-mcp)](https://smithery.ai/server/@HelloGGX/shadcn-vue-mcp)
 

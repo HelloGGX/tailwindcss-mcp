@@ -1,4 +1,4 @@
-# ShadcnVue MCP Server - 一款强大的 AI 驱动工具，可帮助开发者创建高质量的 UI 组件
+# ShadcnVue MCP Server - 一款强大的 AI Agent工具，可帮助开发者创建高质量的 UI 组件
 
 Shadcn-vue MCP Server  是一款强大的 AI 驱动工具，可帮助开发者通过自然语言描述即时创建美观、现代的 UI 组件。它集成 shadcn-vue 组件库和 tailwindcss, 并与主流 IDE 无缝集成，并提供精简的 UI 开发工作流程。
 
