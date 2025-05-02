@@ -1,0 +1,29 @@
+# Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
+
+startCommand:
+  type: stdio
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - openRouterApiKey
+      - openRouterModelId
+    properties:
+      openRouterApiKey:
+        type: string
+        description: OpenRouter API Key
+      openRouterModelId:
+        type: string
+        description: OpenRouter Model ID
+      env:
+        type: object
+        description: Additional environment variables
+    description: Configuration for OpenRouter credentials
+  commandFunction:
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
+    |-
+    (config) => ({ command: 'node', args: ['dist/index.js'], env: { OPENROUTER_API_KEY: config.openRouterApiKey, OPENROUTER_MODEL_ID: config.openRouterModelId, ...(config.env || {}) } })
+  exampleConfig:
+    openRouterApiKey: YOUR_OPENROUTER_API_KEY
+    openRouterModelId: deepseek/deepseek-r1:free
+    env: {}
