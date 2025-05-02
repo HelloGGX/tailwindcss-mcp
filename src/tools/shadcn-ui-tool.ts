@@ -16,16 +16,20 @@ import "dotenv/config";
 
 const OPENROUTER_MODEL_ID = process.env.OPENROUTER_MODEL_ID;
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-if (!OPENROUTER_MODEL_ID) {
-  throw new Error("OPENROUTER_MODEL_ID is not set");
-}
-if (!OPENROUTER_API_KEY) {
-  throw new Error("OPENROUTER_API_KEY is not set");
-}
 
-const openrouter = createOpenRouter({
-  apiKey: process.env.OPENROUTER_API_KEY,
-});
+// 创建一个获取OpenRouter客户端的函数，包含环境变量检查
+function getOpenRouterClient() {
+  if (!OPENROUTER_MODEL_ID) {
+    throw new Error("OPENROUTER_MODEL_ID is not set");
+  }
+  if (!OPENROUTER_API_KEY) {
+    throw new Error("OPENROUTER_API_KEY is not set");
+  }
+
+  return createOpenRouter({
+    apiKey: OPENROUTER_API_KEY,
+  });
+}
 
 export class readUsageDocTool extends BaseTool {
   name = "read-usage-doc";
@@ -99,9 +103,8 @@ export class createUiTool extends BaseTool {
   async execute({ description }: z.infer<typeof this.schema>): Promise<{
     content: Array<{ type: "text"; text: string }>;
   }> {
-    if (!OPENROUTER_MODEL_ID) {
-      throw new Error("OPENROUTER_MODEL_ID is not set");
-    }
+    // 在这里检查环境变量并获取OpenRouter客户端
+    const openrouter = getOpenRouterClient();
     const components = await extractComponents();
     // 使用AI模型来筛选适合用户需求的UI组件
     const transformedMessages = transformMessages([
@@ -118,7 +121,7 @@ export class createUiTool extends BaseTool {
     const { text } = await generateText({
       system: FILTER_COMPONENTS,
       messages: transformedMessages,
-      model: openrouter(OPENROUTER_MODEL_ID),
+      model: openrouter(OPENROUTER_MODEL_ID || ''),
       maxTokens: 2000,
     });
     const responseJson = parseMessageToJson(text);
@@ -176,7 +179,7 @@ export class createUiTool extends BaseTool {
     const { text: uiCode } = await generateText({
       system: CREATE_UI,
       messages: createUiResultMessages,
-      model: openrouter(OPENROUTER_MODEL_ID),
+      model: openrouter(OPENROUTER_MODEL_ID || ''),
       maxTokens: 32768,
       maxRetries: 5,
     });
@@ -216,9 +219,7 @@ This tool improves UI of components and returns improved version of the componen
     context,
   }: z.infer<typeof this.schema>) {
     try {
-      if (!OPENROUTER_MODEL_ID) {
-        throw new Error("OPENROUTER_MODEL_ID is not set");
-      }
+      const openrouter = getOpenRouterClient();
 
       const fileContent = await this.getContentOfFile(
         absolutePathToRefiningFile
@@ -240,7 +241,7 @@ This tool improves UI of components and returns improved version of the componen
             ],
           },
         ],
-        model: openrouter(OPENROUTER_MODEL_ID),
+        model: openrouter(OPENROUTER_MODEL_ID || ''),
         maxTokens: 32768,
         maxRetries: 5,
       });
@@ -269,4 +270,3 @@ This tool improves UI of components and returns improved version of the componen
     }
   }
 }
-

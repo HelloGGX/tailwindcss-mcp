@@ -115,7 +115,12 @@ function extractVueCodeBlocks(markdownContent: string): string[] {
 
 export async function readFullComponentDoc({ name }: { name: string }) {
   const res = await fetch(`${BASE_URL}/src/content/docs/components/${name}.md`);
-  return await res.text();
+  const content = await res.text();
+  // 检查内容是否包含 404 错误信息
+  if (content.includes('<div class="error-code">404</div>')) {
+    return 'No documentation found for this component';
+  }
+  return content;
 }
 
 export async function readUsageComponentDoc({ name }: { name: string }) {

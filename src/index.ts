@@ -25,18 +25,18 @@ const server = new McpServer({
   },
 });
 
-server.resource(
-  "tailwindcss-docs",
-  'tailwindcss://docs',
-  async (uri) => {
-    const response = await fetch('https://context7.com/tailwindlabs/tailwindcss.com/llms.txt?tokens=198559');
-    if (!response.ok) {
-      throw new Error(`Failed to fetch ${uri}: ${response.statusText}`);
-    }
-    const text = await response.text();
-    return { contents: [{ uri: uri.href, text: text }] };
-  }
-);
+// server.resource(
+//   "tailwindcss-docs",
+//   'tailwindcss://docs',
+//   async (uri) => {
+//     const response = await fetch('https://context7.com/tailwindlabs/tailwindcss.com/llms.txt?tokens=198559');
+//     if (!response.ok) {
+//       throw new Error(`Failed to fetch ${uri}: ${response.statusText}`);
+//     }
+//     const text = await response.text();
+//     return { contents: [{ uri: uri.href, text: text }] };
+//   }
+// );
 
 // Register tools
 new readUsageDocTool().register(server);
