@@ -31,12 +31,11 @@ Node.js 22 or above.
 2. **选择安装方法**
 
 #### 方法 1：CLI 快速安装
-
+To install bazi-mcp for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@cantian-ai/bazi-mcp):
 ```bash
-npx -y @smithery/cli@latest install @HelloGGX/shadcn-vue-mcp --client claude
+npx -y @smithery/cli@latest install @HelloGGX/shadcn-vue-mcp --client vscode
 ```
-
-Supported clients: cursor, windsurf, cline, claude
+Supported clients: cursor, windsurf, cline, claude, vscode, vscode-insiders
 
 #### 方法 2：手动配置
 
