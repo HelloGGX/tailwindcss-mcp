@@ -1,15 +1,7 @@
 {
   "name": "@agent/shadcn-vue",
   "version": "1.0.0",
-  "type": "module",
   "description": "MCP (Model Context Protocol) server for front-end developer",
-  "main": "dist/index.js",
-  "bin": {
-    "fe-master": "dist/index.js"
-  },
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "inspect": "tsc && npx @modelcontextprotocol/inspector node -- dist/index.js",
     "inspect-live": "npx @modelcontextprotocol/inspector npx -- @agent/shadcn-vue",
@@ -20,18 +12,31 @@
     "format": "prettier --write .",
     "lint": "eslint \"**/*.{js,ts,tsx}\" --fix"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HelloGGX/shadcn-vue-mcp"
+  },
   "keywords": [
+    "modelcontextprotocol",
     "mcp",
-    "model-context-protocol",
-    "front-end",
-    "tools",
-    "frontend",
-    "developer",
-    "ai",
+    "context7",
+    "agent",
+    "shadcn-vue",
     "tailwindcss"
   ],
   "author": "gavin",
   "license": "MIT",
+  "main": "dist/index.js",
+  "type": "module",
+  "bin": {
+    "shadcn-vue-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "bugs": {
+    "url": "https://github.com/HelloGGX/shadcn-vue-mcp/issues"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.10.2",
     "@openrouter/ai-sdk-provider": "^0.4.5",
