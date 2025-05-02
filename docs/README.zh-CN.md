@@ -2,6 +2,41 @@
 
 Shadcn-vue Component Platform (SCP) 是一款强大的 AI 驱动工具，可帮助开发者通过自然语言描述即时创建美观、现代的 UI 组件。它集成 shadcn-vue 组件库和 tailwindcss, 并与主流 IDE 无缝集成，并提供精简的 UI 开发工作流程。
 
+## ❌ 不使用 shadcn-vue MCP
+
+开发者在构建UI组件时面临诸多挑战：
+
+- ❌ 需要手动查阅shadcn-vue文档和tailwindcss4.0文档，耗费大量时间
+- ❌ 组件代码需要从零开始编写，效率低下
+- ❌ 难以实现设计一致性，组件风格不统一
+- ❌ 难以实现符合组件设计和编码规范的高质量组件
+
+## ✅ 使用 shadcn-vue MCP
+
+SCP提供智能化的UI组件开发体验：
+
+- 1️⃣ 只需用自然语言描述您需要的组件
+- 2️⃣ SCP自动生成符合shadcn-vue、tailwindcss规范的代码
+- 3️⃣ 获得可直接使用的高质量，设计统一的shadcn-vue UI组件
+
+示例用法：
+
+```txt
+/ui 创建一个导航栏组件 use SCP
+```
+
+```txt
+/refine 优化导航栏组件的响应式和可访问性 use SCP
+```
+
+SCP的优势：
+
+- 实时获取最新的shadcn-vue组件使用规范
+- 生成的代码100%符合当前版本要求
+- 内置TailwindCSS样式支持，基于tailwindcss4.0最新文档作为上下文回答
+- 无需反复查阅文档，不再担心版本兼容问题，让AI为您处理所有UI开发细节。
+- 多IDE无缝集成工作流
+
 ### 功能
 
 - 人工智能驱动的 UI 生成：通过自然语言描述来创建 UI 组件
@@ -31,10 +66,13 @@ Node.js 22 or above.
 2. **选择安装方法**
 
 #### 方法 1：CLI 快速安装
+
 To install bazi-mcp for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@HelloGGX/shadcn-vue-mcp):
+
 ```bash
 npx -y @smithery/cli@latest install @HelloGGX/shadcn-vue-mcp --client vscode
 ```
+
 Supported clients: cursor, windsurf, cline, claude, vscode, vscode-insiders
 
 #### 方法 2：手动配置

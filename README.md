@@ -1,12 +1,45 @@
 # ShadcnVue MCP - AI-Powered Shadcn-vue Component Platform for Instant UI Generation
 
-[![smithery badge](https://smithery.ai/badge/@HelloGGX/shadcn-vue-mcp)](https://smithery.ai/server/@HelloGGX/shadcn-vue-mcp) 
+[![smithery badge](https://smithery.ai/badge/@HelloGGX/shadcn-vue-mcp)](https://smithery.ai/server/@HelloGGX/shadcn-vue-mcp)
 
-[![中文文档](https://img.shields.io/badge/docs-中文版-yellow)](./docs/README.zh-CN.md) 
-
-## English
+[![中文文档](https://img.shields.io/badge/docs-中文版-yellow)](./docs/README.zh-CN.md)
 
 Shadcn-vue Component Platform (SCP) is a powerful AI-driven tool that helps developers instantly create beautiful, modern UI components through natural language descriptions. It integrates the shadcn-vue component library and tailwindcss, seamlessly connects with mainstream IDEs, and provides a streamlined UI development workflow.
+
+## ❌ Without shadcn-vue MCP
+
+Developers face multiple challenges when building UI components:
+
+- ❌ Need to manually check shadcn-vue and tailwindcss4.0 documentation, wasting significant time
+- ❌ Component code needs to be written from scratch, inefficient
+- ❌ Difficult to achieve design consistency, components lack unified style
+- ❌ Hard to implement high-quality components that meet design and coding standards
+
+## ✅ With shadcn-vue MCP
+
+SCP provides an intelligent UI component development experience:
+
+- 1️⃣ Simply describe your desired component in natural language
+- 2️⃣ SCP automatically generates code compliant with shadcn-vue and tailwindcss standards
+- 3️⃣ Get production-ready, design-consistent shadcn-vue UI components
+
+Example usage:
+
+```txt
+/ui create a navigation bar component use SCP
+```
+
+```txt
+/refine optimize the navbar's responsiveness and accessibility use SCP
+```
+
+SCP advantages:
+
+- Real-time access to latest shadcn-vue component specifications
+- Generated code 100% compliant with current version requirements
+- Built-in TailwindCSS styling support, using tailwindcss4.0 latest docs as context
+- No more repeatedly checking documentation or worrying about version compatibility
+- Seamless multi-IDE workflow integration
 
 ### Features
 
@@ -35,10 +68,13 @@ Node.js version 22 or above.
 2. **Choose installation method**
 
 #### Method 1: CLI Quick Installation
+
 To install bazi-mcp for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@HelloGGX/shadcn-vue-mcp):
+
 ```bash
 npx -y @smithery/cli@latest install @HelloGGX/shadcn-vue-mcp --client vscode
 ```
+
 Supported clients: cursor, windsurf, cline, claude, vscode, vscode-insiders
 
 #### Method 2: Manual Configuration
@@ -134,6 +170,3 @@ We welcome all contributions! Help us improve @agent/shadcn-vue. Source code is 
 MIT License
 
 ---
-
-
-        
