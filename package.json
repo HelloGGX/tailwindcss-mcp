@@ -1,5 +1,5 @@
 {
-  "name": "@agentgavin/shadcn-vue",
+  "name": "@agent/shadcn-vue",
   "version": "1.0.0",
   "type": "module",
   "description": "MCP (Model Context Protocol) server for front-end developer",
@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "inspect": "tsc && npx @modelcontextprotocol/inspector node -- dist/index.js",
-    "inspect-live": "npx @modelcontextprotocol/inspector npx -- @agentgavin/shadcn-vue",
+    "inspect-live": "npx @modelcontextprotocol/inspector npx -- @agent/shadcn-vue",
     "build": "tsc",
     "start": "tsc && node dist/index.js",
     "prepublishOnly": "npm run build",
@@ -28,7 +28,7 @@
     "ai",
     "tailwindcss"
   ],
-  "author": "AgentGavin AI",
+  "author": "gavin",
   "license": "MIT",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.10.2",
