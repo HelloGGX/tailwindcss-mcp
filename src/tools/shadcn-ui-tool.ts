@@ -4,8 +4,8 @@ import {
   ComponentsSchema,
   createNecessityFilter,
   extractComponents,
+  fetchLibraryDocumentation,
   readFullComponentDoc,
-  readUsageComponentDoc,
   transformMessages,
 } from "../utils/components.js";
 import { CREATE_UI, FILTER_COMPONENTS, REFINED_UI } from "../prompts/ui.js";
@@ -41,12 +41,14 @@ export class readUsageDocTool extends BaseTool {
     content: Array<{ type: "text"; text: string }>;
   }> {
     try {
-      const doc = await readUsageComponentDoc({ name });
+      const doc = await fetchLibraryDocumentation("/unovue/shadcn-vue", {
+        topic: name,
+      });
       return {
         content: [
           {
             type: "text",
-            text: doc,
+            text: doc || "No documentation found for this component",
           },
         ],
       };
@@ -144,7 +146,9 @@ export class createUiTool extends BaseTool {
         .map(async (c) => {
           return {
             ...c,
-            doc: await readUsageComponentDoc({ name: c.name }),
+            doc: await fetchLibraryDocumentation("/unovue/shadcn-vue", {
+              topic: c.name,
+            }),
           };
         })
     );
@@ -154,18 +158,17 @@ export class createUiTool extends BaseTool {
         role: "user",
         content: {
           type: "text",
-          text: `<description>${description}</description><available-components>${usageDocs
-            .map((d) => {
-              return `<component>
-            ### ${d.name}
-
-            > ${d.justification}
-
-            ${d.doc}
-            </component>`;
-            })
-            .join("\n")}
-            </available-components>`,
+          text: `<description>${description}</description>
+          <available-components>
+            ${usageDocs
+              .map((d) => {
+                return `<component name="${d.name}">
+                  <justification><![CDATA[${d.justification}]]></justification>
+                  <documentation><![CDATA[${d.doc}]]></documentation>
+                </component>`;
+              })
+              .join("\n")}
+          </available-components>`,
         },
       },
     ]);
@@ -266,3 +269,4 @@ This tool improves UI of components and returns improved version of the componen
     }
   }
 }
+

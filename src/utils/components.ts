@@ -6,6 +6,9 @@ import { z } from "zod";
 
 const BASE_URL = `https://raw.gitmirror.com/unovue/shadcn-vue/dev/apps/www`;
 const GitHub_URL = `https://api.github.com/repos/unovue/shadcn-vue/contents/apps/www/src/content/docs`;
+const CONTEXT7_API_BASE_URL = "https://context7.com/api";
+const DEFAULT_TYPE = "txt";
+const DEFAULT_MINIMUM_TOKENS = 2000;
 
 export async function extractComponents() {
   try {
@@ -157,4 +160,56 @@ export function transformMessages(messages: PromptMessage[]): CoreMessage[] {
       },
     ],
   }));
+}
+
+/**
+ * Fetches documentation context for a specific library
+ * @param libraryId The library ID to fetch documentation for
+ * @param options Options for the request
+ * @returns The documentation text or null if the request fails
+ */
+export async function fetchLibraryDocumentation(
+  libraryId: string,
+  options: {
+    tokens?: number;
+    topic?: string;
+    folders?: string;
+  } = {
+    tokens: DEFAULT_MINIMUM_TOKENS,
+    topic: "general",
+    folders: "docs",
+  }
+): Promise<string | null> {
+  try {
+    if (libraryId.startsWith("/")) {
+      libraryId = libraryId.slice(1);
+    }
+    const url = new URL(`${CONTEXT7_API_BASE_URL}/v1/${libraryId}`);
+    if (options.tokens)
+      url.searchParams.set("tokens", options.tokens.toString());
+    if (options.topic) url.searchParams.set("topic", options.topic);
+    if (options.folders) url.searchParams.set("folders", options.folders);
+    url.searchParams.set("type", DEFAULT_TYPE);
+    const response = await fetch(url, {
+      headers: {
+        "X-Context7-Source": "mcp-server",
+      },
+    });
+    if (!response.ok) {
+      console.error(`Failed to fetch documentation: ${response.status}`);
+      return null;
+    }
+    const text = await response.text();
+    if (
+      !text ||
+      text === "No content available" ||
+      text === "No context data available"
+    ) {
+      return null;
+    }
+    return text;
+  } catch (error) {
+    console.error("Error fetching library documentation:", error);
+    return null;
+  }
 }
