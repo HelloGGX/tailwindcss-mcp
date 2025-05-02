@@ -196,9 +196,7 @@ export class createUiTool extends BaseTool {
 export class refineCodeTool extends BaseTool {
   name = "refine-code";
   description = `refine code with shadcn/ui components and tailwindcss,
-  Use this tool when the user requests to refine/improve current UI component with /ui commands,
-or when context is about improving, or refining UI for a Vue component or molecule (NOT for big pages).
-This tool improves UI of components and returns improved version of the component and instructions on how to implement it.`;
+  Use this tool when the user requests to refine/improve current UI component with /ui commands`;
 
   schema = z.object({
     userMessage: z.string().describe("Full user's message about UI refinement"),
