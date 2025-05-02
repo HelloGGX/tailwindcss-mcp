@@ -162,7 +162,6 @@ We welcome all contributions! Help us improve @agent/shadcn-vue. Source code is 
 ## 👥 Community & Support
 
 - [Discord Community](https://discord.gg/82Kf65ut) - Join our active community
-<!-- - [WeChat](https://x.com/serafimcloud) - Follow for latest updates -->
 
 ## 📝 License
 

@@ -167,7 +167,6 @@ AI: 生成的代码如下：
 ## 👥 社区与支持
 
 - [Discord 社区](https://discord.gg/82Kf65ut) - 加入我们的活跃社区
-<!-- - [微信](https://x.com/serafimcloud) - 关注获取最新动态 -->
 
 ## 📝 许可证
 
