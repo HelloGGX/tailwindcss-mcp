@@ -84,7 +84,7 @@ Manually configure AI application (e.g. Claude Desktop).
 {
   "mcpServers": {
     "shadcn-vue": {
-      "command": "node", //npx
+      "command": "npx",
       "args": ["-y", "@agent/shadcn-vue"],
       "env": {
         "OPENROUTER_MODEL_ID": "Your selected OpenRouter model id",
