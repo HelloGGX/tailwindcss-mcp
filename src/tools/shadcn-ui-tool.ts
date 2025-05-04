@@ -175,8 +175,8 @@ export class createUiTool extends BaseTool {
       system: CREATE_UI,
       messages: createUiResultMessages,
       model: openrouter(OPENROUTER_MODEL_ID || ""),
-      maxTokens: 32768,
-      maxRetries: 3,
+      maxTokens: 8192,
+      maxRetries: 2,
     });
 
     return {
@@ -228,8 +228,8 @@ export class refineCodeTool extends BaseTool {
           },
         ],
         model: openrouter(OPENROUTER_MODEL_ID || ""),
-        maxTokens: 32768,
-        maxRetries: 5,
+        maxTokens: 8192,
+        maxRetries: 2,
       });
 
       return {
