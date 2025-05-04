@@ -8,7 +8,7 @@ const BASE_URL = `https://raw.gitmirror.com/unovue/shadcn-vue/dev/apps/www`;
 const GitHub_URL = `https://api.github.com/repos/unovue/shadcn-vue/contents/apps/www/src/content/docs`;
 const CONTEXT7_API_BASE_URL = "https://context7.com/api";
 const DEFAULT_TYPE = "txt";
-const DEFAULT_MINIMUM_TOKENS = 2000;
+const DEFAULT_MINIMUM_TOKENS = 1000;
 
 export async function extractComponents() {
   try {

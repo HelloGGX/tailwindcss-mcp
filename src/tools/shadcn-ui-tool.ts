@@ -6,30 +6,31 @@ import {
   extractComponents,
   fetchLibraryDocumentation,
   readFullComponentDoc,
+  readUsageComponentDoc,
   transformMessages,
 } from "../utils/components.js";
 import { CREATE_UI, FILTER_COMPONENTS, REFINED_UI } from "../prompts/ui.js";
 import { parseMessageToJson } from "../utils/parser.js";
 import { generateText } from "ai";
-import { createOpenRouter } from "@openrouter/ai-sdk-provider";
+import { createDeepSeek  } from '@ai-sdk/deepseek';
 import dotenv from "dotenv";
 
 // Load environment variables from .env file if present
 dotenv.config();
 
-const OPENROUTER_MODEL_ID = process.env.OPENROUTER_MODEL_ID;
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+const DEEPSEEK_MODEL_ID = process.env.DEEPSEEK_MODEL_ID;
+const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
 
 // 创建一个获取OpenRouter客户端的函数，包含环境变量检查
-if (!OPENROUTER_MODEL_ID) {
-  throw new Error("OPENROUTER_MODEL_ID is not set");
+if (!DEEPSEEK_MODEL_ID) {
+  throw new Error("DEEPSEEK_MODEL_ID is not set");
 }
-if (!OPENROUTER_API_KEY) {
-  throw new Error("OPENROUTER_API_KEY is not set");
+if (!DEEPSEEK_API_KEY) {
+  throw new Error("DEEPSEEK_API_KEY is not set");
 }
 
-const openrouter = createOpenRouter({
-  apiKey: OPENROUTER_API_KEY,
+const deepseek = createDeepSeek({
+  apiKey: process.env.DEEPSEEK_API_KEY ?? '',
 });
 
 export class readUsageDocTool extends BaseTool {
@@ -118,7 +119,7 @@ export class createUiTool extends BaseTool {
     const { text } = await generateText({
       system: FILTER_COMPONENTS,
       messages: transformedMessages,
-      model: openrouter(OPENROUTER_MODEL_ID || ""),
+      model: deepseek(DEEPSEEK_MODEL_ID || ""),
       maxTokens: 2000,
     });
     const responseJson = parseMessageToJson(text);
@@ -144,9 +145,7 @@ export class createUiTool extends BaseTool {
       filteredComponents.components.filter(createNecessityFilter("optional")).map(async (c) => {
         return {
           ...c,
-          doc: await fetchLibraryDocumentation("/unovue/shadcn-vue", {
-            topic: c.name,
-          }),
+          doc: await readUsageComponentDoc({ name: c.name }),
         };
       })
     );
@@ -174,9 +173,9 @@ export class createUiTool extends BaseTool {
     const { text: uiCode } = await generateText({
       system: CREATE_UI,
       messages: createUiResultMessages,
-      model: openrouter(OPENROUTER_MODEL_ID || ""),
-      maxTokens: 32768,
-      maxRetries: 3,
+      model: deepseek(DEEPSEEK_MODEL_ID || ""),
+      maxTokens: 8192,
+      maxRetries: 2,
     });
 
     return {
@@ -227,9 +226,9 @@ export class refineCodeTool extends BaseTool {
             ],
           },
         ],
-        model: openrouter(OPENROUTER_MODEL_ID || ""),
-        maxTokens: 32768,
-        maxRetries: 5,
+        model: deepseek(DEEPSEEK_MODEL_ID || ""),
+        maxTokens: 8192,
+        maxRetries: 2,
       });
 
       return {
