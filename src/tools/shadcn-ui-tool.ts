@@ -145,7 +145,9 @@ export class createUiTool extends BaseTool {
       filteredComponents.components.filter(createNecessityFilter("optional")).map(async (c) => {
         return {
           ...c,
-          doc: await readUsageComponentDoc({ name: c.name }),
+          doc: await fetchLibraryDocumentation("/unovue/shadcn-vue", {
+            topic: c.name,
+          }),
         };
       })
     );
