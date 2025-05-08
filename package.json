@@ -25,7 +25,7 @@
     "tailwindcss"
   ],
   "author": "gavin",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "main": "dist/index.js",
   "type": "module",
   "bin": {
